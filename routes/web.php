@@ -57,4 +57,59 @@ Route::get('/convert', function (Request $request) {
     ]);
 });
 
+Route::get('/convert_live', function (Request $request) {
+    // initialize service with empty array
+    $service = new CurrencyExchangeService([]);
+
+    // set rules for input validation
+    $rules = [
+        'source' => 'required',
+        'target' => 'required',
+        'amount' => 'required',
+    ];
+
+    // validate input arguments
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+        return response()->json([
+            'msg' => $validator->errors()->all(), 
+            'amount' => null
+        ]);
+    }
+
+    // retrieve args
+    $source = $request->input('source');
+    $target = $request->input('target');
+    $amount = $request->input('amount');
+
+    // validate input amount
+    if (!$service->validate_amount($amount)) {
+        return response()->json([
+            'msg' => 'invalid amount', 
+            'amount' => null
+        ]);
+    }
+
+    // format response
+    return response()->json([
+        "msg" => "success", 
+        "amount" => $service->convert_live($source, $target, $amount)
+    ]);
+});
+
+Route::get('/convert_r', function (Request $request) {
+    // initialize service with empty array
+    $service = new CurrencyExchangeService([]);
+
+    // retrieve args
+    $source = $request->input('source');
+    $target = $request->input('target');
+    $amount = $request->input('amount');
+
+    // format response
+    return response()->json([
+        "msg" => "success", 
+        "amount" => $service->convert_r($source, $target, $amount)
+    ]);
+});
 ?>

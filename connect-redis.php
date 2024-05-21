@@ -16,9 +16,7 @@ if ($redis->ping()) {
             echo "\t $key : $value";
             echo "\n";
         }
-    }
-
-    
+    }   
 }
 
 ?>

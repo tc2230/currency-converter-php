@@ -96,20 +96,4 @@ Route::get('/convert_live', function (Request $request) {
         "amount" => $service->convert_live($source, $target, $amount)
     ]);
 });
-
-Route::get('/convert_r', function (Request $request) {
-    // initialize service with empty array
-    $service = new CurrencyExchangeService([]);
-
-    // retrieve args
-    $source = $request->input('source');
-    $target = $request->input('target');
-    $amount = $request->input('amount');
-
-    // format response
-    return response()->json([
-        "msg" => "success", 
-        "amount" => $service->convert_r($source, $target, $amount)
-    ]);
-});
 ?>

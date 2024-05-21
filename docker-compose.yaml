@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  redis-stack:
+    image: redis/redis-stack:latest
+    ports:
+      - "8001:8001"
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+  
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9876:9876"
+    volumes:
+      - ./:/currency-converter-php
+    depends_on:
+      - redis-stack
+    command: ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "9876"]
+
+volumes:
+  redis-data:
+    name: redis-data

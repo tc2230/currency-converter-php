@@ -50,10 +50,13 @@ Route::get('/convert', function (Request $request) {
         ]);
     }
 
+    // convert
+    $converted_amount = $service->convert($source, $target, $amount);
+
     // format response
     return response()->json([
         "msg" => "success", 
-        "amount" => $service->convert($source, $target, $amount)
+        "amount" => $converted_amount
     ]);
 });
 
@@ -90,10 +93,15 @@ Route::get('/convert_live', function (Request $request) {
         ]);
     }
 
+    // convert
+    [$converted_amount, $rate] = $service->convert_live($source, $target, $amount);
+
     // format response
     return response()->json([
         "msg" => "success", 
-        "amount" => $service->convert_live($source, $target, $amount)
+        "amount" => $converted_amount, 
+        "query_time" => date("Y-m-d H:i:s",time()),
+        "rate" => $rate
     ]);
 });
 ?>

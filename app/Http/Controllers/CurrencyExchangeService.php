@@ -53,7 +53,7 @@ class CurrencyExchangeService extends Controller
         // formmating
         $formatted_value = number_format($converted_value, 2, '.', ',');
 
-        return $formatted_value;
+        return [$formatted_value, $rate];
     }
 
     // conversion function (live exchange rate)
